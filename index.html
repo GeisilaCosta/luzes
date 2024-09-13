@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Efeitos de luzes seguindo o mouse</title>
+    <style>
+        body{
+            background-color: black;
+            overflow: hidden;
+        }
+        .luz{
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            position: absolute;
+            transform: translate(-10px, -10px);
+            pointer-events: none; /* evita interferência com eventos de mouse */
+        }
+        .luz-vermelha{
+            background-color: rgb(255, 0, 0);
+        }
+        .luz-azul{
+            background-color: rgb(0, 0, 255);
+        }
+        .luz-verde{
+            background-color: rgb(0, 128, 0);
+        }
+        .luz-amarela{
+            background-color: rgb(240, 224, 3);
+        }
+        .luz-rastro {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            position: absolute;
+            pointer-events: none;
+            transform: translate(-10px, -10px);
+            opacity: 1;
+            transition: opacity 0.8s, transform 0.8s;
+        }
+        .luz-vermelha.lanterna {
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+            filter: blur(2px);
+        }
+        .luz-azul.lanterna {
+            box-shadow: 0 0 20px rgba(0, 0, 255, 0.7);
+            filter: blur(2px);
+        }
+        .luz-verde.lanterna {
+            box-shadow: 0 0 20px rgba(0, 128, 0, 0.7);
+            filter: blur(2px);
+        }
+        .luz-amarela.lanterna {
+            box-shadow: 0 0 20px rgba(240, 224, 3, 0.7);
+            filter: blur(2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="luz luz-vermelha"></div>
+    <div class="luz luz-azul"></div>
+    <div class="luz luz-verde"></div>
+    <div class="luz luz-amarela"></div>
+
+    <script>
+        const luzes = document.querySelectorAll('.luz');
+        const rastros = [];
+
+        document.addEventListener('mousemove', (event) => {
+          luzes.forEach((luz, index) => {
+            const delay = index * 50; // Pequeno atraso entre as luzes
+
+            setTimeout(() => {
+              const rastro = document.createElement('div');
+              rastro.className = `luz-rastro ${luz.classList[1]} lanterna`; // Copia a cor da luz
+              rastro.style.left = event.clientX + (index * 10) + 'px';
+              rastro.style.top = event.clientY + (index * 10) + 'px';
+
+              document.body.appendChild(rastro);
+              rastros.push(rastro);
+
+              // Remover rastros antigos após um tempo para suavizar o efeito
+              setTimeout(() => {
+                rastro.style.opacity = 0;
+                setTimeout(() => {
+                  rastro.remove();
+                  rastros.shift();
+                }, 800); // Tempo de transição para desaparecer
+              }, 200); // Rastro permanece visível por 200ms
+            }, delay);
+          });
+        });
+    </script>
+</body>
+</html>
