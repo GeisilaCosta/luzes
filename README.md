@@ -13,7 +13,7 @@ Clone o repositório:
 
 bash
 Copiar código
-git clone https://github.com/seu-usuario/seu-repositorio.git
+git clone https://github.com/GeisilaCosta/luzes.git
 Navegue até o diretório do projeto:
 
 bash
